@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import OntologyWizard from '@/components/ontology-wizard';
+import { ImprovementPanel, WriteBackWorkflowPanel } from '@/components/improvement-engine';
 
 // ── 타입 ────────────────────────────────────────────────────
 
@@ -36,6 +38,7 @@ export default function Home() {
   const [result, setResult] = useState<ACWResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'demo'>('dashboard');
+  const [wizardOpen, setWizardOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/dashboard').then((r) => r.json()).then(setStats);
@@ -72,11 +75,15 @@ export default function Home() {
             </div>
           </div>
           <div className="flex gap-2">
-            <button onClick={() => setActiveTab('dashboard')} className={`px-4 py-2 rounded-lg text-sm font-medium transition ${activeTab === 'dashboard' ? 'bg-white text-[#00338D]' : 'bg-white/10 hover:bg-white/20'}`}>
+            <button type="button" onClick={() => setActiveTab('dashboard')} className={`px-4 py-2 rounded-lg text-sm font-medium transition ${activeTab === 'dashboard' ? 'bg-white text-[#00338D]' : 'bg-white/10 hover:bg-white/20'}`}>
               대시보드
             </button>
-            <button onClick={() => setActiveTab('demo')} className={`px-4 py-2 rounded-lg text-sm font-medium transition ${activeTab === 'demo' ? 'bg-white text-[#00338D]' : 'bg-white/10 hover:bg-white/20'}`}>
+            <button type="button" onClick={() => setActiveTab('demo')} className={`px-4 py-2 rounded-lg text-sm font-medium transition ${activeTab === 'demo' ? 'bg-white text-[#00338D]' : 'bg-white/10 hover:bg-white/20'}`}>
               ACW 데모
+            </button>
+            <button type="button" onClick={() => setWizardOpen(true)} className="px-4 py-2 rounded-lg text-sm font-medium transition bg-white/10 hover:bg-white/20 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+              온톨로지 위자드
             </button>
           </div>
         </div>
@@ -94,6 +101,15 @@ export default function Home() {
           />
         )}
       </main>
+
+      <OntologyWizard
+        open={wizardOpen}
+        onClose={() => setWizardOpen(false)}
+        onGenerate={(ontology) => {
+          console.log('Generated ontology:', ontology);
+          alert(`온톨로지 생성 완료!\n\n객체: ${ontology.objects.length}개\n관계: ${ontology.links.length}개\n액션: ${ontology.actions.length}개\nDelta Tables: ${ontology.objects.length}개`);
+        }}
+      />
     </div>
   );
 }
@@ -428,6 +444,12 @@ function DemoView({ scenarios, selectedScenario, result, loading, onRunPipeline 
               ))}
             </div>
           </div>
+
+          {/* 온톨로지 기반 개선방안 */}
+          <ImprovementPanel result={result} />
+
+          {/* Write-back 워크플로우 상세 */}
+          <WriteBackWorkflowPanel result={result} />
         </div>
       )}
     </div>
