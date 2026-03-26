@@ -1,0 +1,15 @@
+{
+  "name": "@k-palantir/seed-data",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "seed": "tsx src/index.ts",
+    "seed:json": "tsx src/index.ts --json > ../../data/seed-output.json",
+    "build": "tsc",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@k-palantir/ontology": "*"
+  }
+}

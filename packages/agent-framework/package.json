@@ -1,0 +1,15 @@
+{
+  "name": "@k-palantir/agent-framework",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "@k-palantir/ontology": "*",
+    "zod": "^3.22.0"
+  }
+}

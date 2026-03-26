@@ -1,0 +1,21 @@
+{
+  "name": "k-palantir-acw",
+  "version": "1.0.0",
+  "private": true,
+  "description": "K-Palantir 콜센터 ACW 자동화 — Databricks 온톨로지 기반",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "seed": "tsx packages/seed-data/src/index.ts",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}
